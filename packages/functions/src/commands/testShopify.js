@@ -14,5 +14,5 @@ const Shopify = require('shopify-api-node');
     //   src: 'https://localhost:3000/scripttag/avada-sale-pop.min.js'
     // })
 
-    // await shopify.scriptTag.delete(235402625185);
+    // await shopify.scriptTag.delete(235403968673);
 })();

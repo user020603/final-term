@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './DesktopPositionInput.scss';
+import '../../styles/DesktopPositionInput.scss';
 import {Labelled, LegacyStack, Text} from '@shopify/polaris';
 
 const defaultOptions =  [

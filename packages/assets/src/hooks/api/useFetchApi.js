@@ -27,6 +27,8 @@ export default function useFetchApi({
   const [data, setData] = useState(defaultData);
   const [pageInfo, setPageInfo] = useState({});
   const [count, setCount] = useState(0);
+  const [sortValue, setSortValue] = useState('DATE_MODIFIED_DESC');
+  const [selectedItems, setSelectedItems] = useState();
 
   async function fetchApi(apiUrl, params = null, keepPreviousData = false) {
     try {
@@ -48,6 +50,8 @@ export default function useFetchApi({
           }
           return Array.isArray(newData) ? [...prev, ...newData] : {...prev, ...newData};
         });
+      } else {
+        setData(resp);
       }
     } catch (e) {
       handleError(e);
@@ -63,6 +67,13 @@ export default function useFetchApi({
     }
   }, []);
 
+  const handleChangeInput = (key, value) => {
+    setData(prevInput => ({
+      ...prevInput,
+      [key]: value
+    }));
+  };
+
   return {
     fetchApi,
     data,
@@ -72,6 +83,11 @@ export default function useFetchApi({
     setCount,
     loading,
     fetched,
-    setFetched
+    setFetched,
+    handleChangeInput,
+    sortValue,
+    setSortValue,
+    selectedItems,
+    setSelectedItems
   };
 }

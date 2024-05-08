@@ -1,4 +1,4 @@
-export const defaultSettings = {
+const defaultSettings = {
   position: 'bottom-left',
   hideTimeAgo: false,
   truncateProductName: false,
@@ -11,3 +11,4 @@ export const defaultSettings = {
   allowShow: 'all'
 };
 
+export default defaultSettings;

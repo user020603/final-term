@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {Card, Layout, Page, Text} from '@shopify/polaris';
+import React from 'react';
+import {Page} from '@shopify/polaris';
 import NotificationList from './listItems.js';
 
 /**

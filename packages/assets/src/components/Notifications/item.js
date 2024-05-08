@@ -1,5 +1,5 @@
 import React from 'react';
-import './NoticationPopup.scss';
+import '../../styles/NoticationPopup.scss';
 import moment from 'moment';
 import {truncateString} from '../../helpers/utils/utils.js';
 

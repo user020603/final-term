@@ -1,39 +1,33 @@
-import {ResourceList, ResourceItem, Card} from '@shopify/polaris';
-import {useState, useEffect} from 'react';
-
+import {ResourceList, Card} from '@shopify/polaris';
 import useFetchApi from '../../hooks/api/useFetchApi.js';
-import {api} from '../../helpers';
-
-import NotificationPopup from './item';
+import LoadingCard from '../../components/Notifications/LoadingCard.js';
+import NotificationItem from '../../components/Notifications/NotificationItem.js';
 
 function NotificationList() {
-  async function callApi() {
-    const data = await api('/notifications');
-    setInput(data);
-  }
-
-  useEffect(() => {
-    callApi();
-  }, []);
-
-  const {loading, data: input, setData: setInput, setLoading} = useFetchApi('/notifications');
-
-  // console.log(input);
-
-  const [sortValue, setSortValue] = useState('DATE_MODIFIED_DESC');
-  const [selectedItems, setSelectedItems] = useState();
+  const {
+    data: input,
+    loading,
+    sortValue,
+    setSortValue,
+    selectedItems,
+    setSelectedItems
+  } = useFetchApi({url: '/notifications'});
 
   const resourceName = {
     singular: 'notification',
     plural: 'notifications'
   };
 
+  if (loading) {
+    return <LoadingCard />;
+  }
+
   return (
     <Card padding="0">
       <ResourceList
         resourceName={resourceName}
         items={input}
-        renderItem={renderItem}
+        renderItem={NotificationItem}
         sortValue={sortValue}
         sortOptions={[
           {label: 'Newest update', value: 'DATE_MODIFIED_DESC'},
@@ -53,25 +47,6 @@ function NotificationList() {
       />
     </Card>
   );
-
-  function renderItem(item) {
-    const {id, firstName, city, country, productName, timestamp, productImage, settings} = item;
-
-    return (
-      <ResourceItem id={id}>
-        <NotificationPopup
-          id={id}
-          firstName={firstName}
-          city={city}
-          country={country}
-          productName={productName}
-          timestamp={timestamp}
-          productImage={productImage}
-          settings={settings}
-        />
-      </ResourceItem>
-    );
-  }
 }
 
 export default NotificationList;

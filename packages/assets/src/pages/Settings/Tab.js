@@ -1,50 +1,33 @@
-import {LegacyCard, Tabs, Checkbox, RangeSlider, Select, TextField, Grid} from '@shopify/polaris';
-import {useState, useEffect} from 'react';
-import DesktopPositionInput from './DesktopPositionInput';
+import {LegacyCard, Page, Layout, SkeletonBodyText, Tabs} from '@shopify/polaris';
+import {useState, useCallback} from 'react';
 import useFetchApi from '../../hooks/api/useFetchApi.js';
+import useEditApi from '../../hooks/api/useEditApi.js';
+import NotificationPopup from '../../components/Notifications/item.js';
+import defaultSettings from '../../helpers/defaultSettings.js';
+import DisplayTab from '../../components/Settings/DisplayTab.js';
+import TriggerTab from '../../components/Settings/TriggerTab.js';
 
-import {api} from '../../helpers';
-
-const triggerOptions = [
-  {label: 'All pages', value: 'all'},
-  {label: 'Specific pages', value: 'specific'}
-];
-
-const defaultOptions = [
-  {label: 'Bottom left', value: 'bottom-left'},
-  {label: 'Bottom right', value: 'bottom-right'},
-  {label: 'Top left', value: 'top-left'},
-  {label: 'Top right', value: 'top-right'}
-];
-
-function TabsInsideOfACardExample() {
+function TabSettings() {
   const [selectedTab, setSelectedTab] = useState(0);
 
-  async function callApi() {
-    const data = await api('/settings');
-    console.log(data);
-    setInput(data);
-  }
+  const {data: input, handleChangeInput, loading} = useFetchApi({
+    url: '/settings',
+    defaultData: defaultSettings
+  });
 
-  useEffect(() => {
-    callApi();
-  }, []);
+  const {editing, handleEdit: handleSaveSettings} = useEditApi({
+    url: '/settings'
+  });
 
-  const {loading, data: input, setData: setInput, setLoading} = useFetchApi('/settings');
+  const handleTabChange = useCallback(selectedTabIndex => setSelectedTab(selectedTabIndex), []);
 
-  const handleChangeInput = (key, value) => {
-    setInput(prevInput => ({
-      ...prevInput,
-      [key]: value
-    }));
-  };
-
-  const handleRangeSliderChange = (key, value) => {
-    handleChangeInput(key, value);
-  };
-
-  const handleTriggerPage = (key, value) => {
-    handleChangeInput(key, value);
+  const items = {
+    firstName: 'Nole',
+    city: 'CA',
+    country: 'United States',
+    productName: 'Iphone 15 Pro Max',
+    productImage:
+      'https://product.hstatic.net/200000409445/product/xanh_d19c3d1580d34a45a0dfca7ad7499de7_master.jpg'
   };
 
   const tabs = [
@@ -53,170 +36,73 @@ function TabsInsideOfACardExample() {
       content: 'Display',
       accessibilityLabel: 'Display',
       panelID: 'display-setting-1',
-      component: (
-        <>
-          <DesktopPositionInput
-            label="Desktop Position"
-            value={input.position}
-            onChange={newValue => handleChangeInput('position', newValue)}
-            helpText="The display position of the pop on your website."
-            options={defaultOptions}
-          />
-
-          <Checkbox
-            label="Hide time ago"
-            checked={input.hideTimeAgo}
-            onChange={newChecked => handleChangeInput('hideTimeAgo', newChecked)}
-          />
-          <Checkbox
-            label="Truncate content text"
-            checked={input.truncateProductName}
-            onChange={newChecked => handleChangeInput('truncateProductName', newChecked)}
-            helpText="If your product name is long for one line, it will be truncated to 'Product na...' "
-          />
-
-          <LegacyCard sectioned title="Timing">
-            <Grid>
-              <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
-                <RangeSlider
-                  output
-                  label="Display duration"
-                  min={0}
-                  max={100}
-                  value={input.displayDuration}
-                  onChange={newValue => handleRangeSliderChange('displayDuration', newValue)}
-                  helpText="Hong long each pop will display on your page."
-                  suffix={
-                    <p
-                      style={{
-                        minWidth: '24px',
-                        textAlign: 'right'
-                      }}
-                    >
-                      {input.displayDuration}
-                    </p>
-                  }
-                />
-              </Grid.Cell>
-
-              <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
-                <RangeSlider
-                  output
-                  label="Gap time between two pops"
-                  min={0}
-                  max={100}
-                  value={input.popsInterval}
-                  onChange={newValue => handleRangeSliderChange('popsInterval', newValue)}
-                  helpText="The time interval between two popup notifications."
-                  suffix={
-                    <p
-                      style={{
-                        minWidth: '24px',
-                        textAlign: 'right'
-                      }}
-                    >
-                      {input.popsInterval}
-                    </p>
-                  }
-                />
-              </Grid.Cell>
-              <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
-                {' '}
-                <RangeSlider
-                  output
-                  label="Time before the first pop"
-                  min={0}
-                  max={100}
-                  value={input.firstDelay}
-                  onChange={newValue => handleRangeSliderChange('firstDelay', newValue)}
-                  helpText="The delay time before the first notification."
-                  suffix={
-                    <p
-                      style={{
-                        minWidth: '24px',
-                        textAlign: 'right'
-                      }}
-                    >
-                      {input.firstDelay}
-                    </p>
-                  }
-                />
-              </Grid.Cell>
-              <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
-                <RangeSlider
-                  output
-                  label="Maximum of popups"
-                  min={0}
-                  max={80}
-                  value={input.maxPopsDisplay}
-                  onChange={newValue => handleRangeSliderChange('maxPopsDisplay', newValue)}
-                  helpText="The maximum number of popups are allowed to show after page loading. Maximum number is 80"
-                  suffix={
-                    <p
-                      style={{
-                        minWidth: '24px',
-                        textAlign: 'right'
-                      }}
-                    >
-                      {input.maxPopsDisplay}
-                    </p>
-                  }
-                />
-              </Grid.Cell>
-            </Grid>
-          </LegacyCard>
-        </>
-      )
+      component: <DisplayTab input={input} handleChangeInput={handleChangeInput} />
     },
     {
       id: 'trigger-1',
       content: 'Triggers',
       accessibilityLabel: 'Trigger',
       panelID: 'trigger-setting-1',
-      // component: <TriggersPage />
-      component: (
-        <div>
-          <Select
-            label="PAGE RESTRICTION"
-            options={triggerOptions}
-            onChange={newValue => handleTriggerPage('allowShow', newValue)}
-            value={input.allowShow}
-          />
-          {input.allowShow === 'specific' && (
-            <TextField
-              label="Included pages"
-              value={input.includedUrls}
-              onChange={newValue => handleTriggerPage('includedUrls', newValue)}
-              helpText="Page URLs to show the pop-up (separated by new lines)"
-              multiline={5}
-            />
-          )}
-          <TextField
-            label="Excluded pages"
-            value={input.excludedUrls}
-            onChange={newValue => handleTriggerPage('excludedUrls', newValue)}
-            helpText="Page URLs NOT to show the pop-up (separated by new lines)"
-            multiline={5}
-          />
-        </div>
-      )
+      component: <TriggerTab input={input} handleChangeInput={handleChangeInput} />
     }
   ];
 
+  if (loading)
+    return (
+      <Page title="Settings" fullWidth subtitle="Decide how your notifications will display">
+        <Layout>
+          <Layout.Section variant="oneThird">
+            <LegacyCard sectioned>
+              <SkeletonBodyText lines={5} />
+            </LegacyCard>
+          </Layout.Section>
+          <Layout.Section>
+            <LegacyCard sectioned>
+              <SkeletonBodyText lines={10} />
+            </LegacyCard>
+          </Layout.Section>
+        </Layout>
+      </Page>
+    );
+
   console.log(input);
 
-  return {
-    input,
-    component: (
-      <LegacyCard>
-        <Tabs tabs={tabs} selected={selectedTab} onSelect={setSelectedTab}>
-          <LegacyCard.Section title={tabs[selectedTab].content}>
-            {tabs[selectedTab].component}
-          </LegacyCard.Section>
-        </Tabs>
-      </LegacyCard>
-    )
-  };
+  return (
+    <Page
+      title="Settings"
+      fullWidth
+      subtitle="Decide how your notifications will display"
+      primaryAction={{
+        content: 'Save',
+        onAction: () => {
+          handleSaveSettings(input);
+        },
+        loading: editing
+      }}
+    >
+      <Layout>
+        <Layout.Section variant="oneThird">
+          <NotificationPopup
+            city={items.city}
+            country={items.country}
+            firstName={items.firstName}
+            productImage={items.productImage}
+            productName={items.productName}
+            settings={input}
+          ></NotificationPopup>
+        </Layout.Section>
+        <Layout.Section variant="twoThirds">
+          <LegacyCard>
+            <Tabs tabs={tabs} selected={selectedTab} onSelect={handleTabChange}>
+              <LegacyCard.Section title={tabs[selectedTab].content}>
+                {tabs[selectedTab].component}
+              </LegacyCard.Section>
+            </Tabs>
+          </LegacyCard>
+        </Layout.Section>
+      </Layout>
+    </Page>
+  );
 }
 
-export default TabsInsideOfACardExample;
+export default TabSettings;
