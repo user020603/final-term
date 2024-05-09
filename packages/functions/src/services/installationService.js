@@ -18,8 +18,9 @@ export const afterInstall = async ctx => {
       status: 'any',
       limit: 30
     });
-
-    await Promise.all(addNotifications(orders, shop, shopifyDomain), addDefaultSettings(shop));
+    await Promise.all([addNotifications(orders, shop, shopifyDomain), addDefaultSettings(shop)]);
+    console.log('\n################\n Added after install \n###############\n');
+    // await Promise.all(addNotifications(orders, shop, shopifyDomain), addDefaultSettings(shop));
   } catch (e) {
     console.error('###########', e);
   }
