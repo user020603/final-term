@@ -2,16 +2,38 @@ import {ResourceList, Card} from '@shopify/polaris';
 import useFetchApi from '../../hooks/api/useFetchApi.js';
 import LoadingCard from '../../components/Notifications/LoadingCard.js';
 import NotificationItem from '../../components/Notifications/NotificationItem.js';
+import usePaginate from '../../hooks/api/usePaginate.js';
 
 function NotificationList() {
+  // const {
+  //   data: input,
+  //   loading,
+  //   sortValue,
+  //   setSortValue,
+  //   selectedItems,
+  //   setSelectedItems
+  // } = useFetchApi({url: '/notifications'});
+
   const {
+    prevPage,
+    nextPage,
     data: input,
     loading,
     sortValue,
     setSortValue,
     selectedItems,
     setSelectedItems
-  } = useFetchApi({url: '/notifications'});
+  } = usePaginate({
+    url: '/notifications',
+    defaultData: [],
+    initLoad: true,
+    keepPreviousData: false,
+    presentData: null,
+    defaultLimit: 2,
+    defaultSort: 'createdAt:asc',
+    searchKey: 'searchKey',
+    initQueries: {}
+  });
 
   const resourceName = {
     singular: 'notification',
@@ -42,7 +64,9 @@ function NotificationList() {
         selectable
         pagination={{
           hasNext: true,
-          onNext: () => {}
+          hasPrevious: true,
+          onNext: nextPage,
+          onPrevious: prevPage
         }}
       />
     </Card>
