@@ -47,6 +47,8 @@ export async function updateSettings(shopId, settings) {
 
 export async function addDefaultSettings(shop) {
   const shopId = shop.id;
+  const shopifyDomain = shop.shopifyDomain
   defaultSettings.shopId = shopId;
+  defaultSettings.shopifyDomain = shopifyDomain
   await settingsRef.add(defaultSettings);
 }

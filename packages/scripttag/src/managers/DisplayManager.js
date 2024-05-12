@@ -13,7 +13,7 @@ export default class DisplayManager {
     this.settings = settings;
 
     // console.log(this.notifications);
-    // console.log(this.settings);
+    console.log(this.settings);
 
     // Your display logic here
     await new Promise(resolve => setTimeout(resolve, this.settings[0].firstDelay * 1000));

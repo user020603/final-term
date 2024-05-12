@@ -64,11 +64,17 @@ export default function usePaginate({
     setQueries(prev => ({...prev, page}));
   };
 
+  const onSort = async sortKey => {
+    setQueries(prev => ({...prev, sort: sortKey}));
+    await handleFetchApi({sort: sortKey});
+  };
+
   return {
     prevPage: () => onPaginate('prev'),
     nextPage: () => onPaginate('next'),
     onQueryChange,
     onQueriesChange,
+    onSort,
     ...fetchApiHook
   };
 }

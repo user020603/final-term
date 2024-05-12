@@ -17,24 +17,26 @@ function NotificationList() {
   const {
     prevPage,
     nextPage,
+    onSort,
     data: input,
     loading,
     sortValue,
     setSortValue,
     selectedItems,
-    setSelectedItems
+    setSelectedItems,
+    pageInfo
   } = usePaginate({
     url: '/notifications',
     defaultData: [],
     initLoad: true,
     keepPreviousData: false,
     presentData: null,
-    defaultLimit: 2,
-    defaultSort: 'createdAt:asc',
+    defaultLimit: 4,
+    defaultSort: 'createdAt:desc',
     searchKey: 'searchKey',
     initQueries: {}
   });
-
+  console.log(pageInfo.hasPre, pageInfo.hasNext);
   const resourceName = {
     singular: 'notification',
     plural: 'notifications'
@@ -52,19 +54,20 @@ function NotificationList() {
         renderItem={NotificationItem}
         sortValue={sortValue}
         sortOptions={[
-          {label: 'Newest update', value: 'DATE_MODIFIED_DESC'},
-          {label: 'Oldest update', value: 'DATE_MODIFIED_ASC'}
+          {label: 'Newest update', value: 'createdAt:desc'},
+          {label: 'Oldest update', value: 'createdAt:asc'}
         ]}
         onSortChange={selected => {
           setSortValue(selected);
+          onSort(selected);
           console.log(`Sort option changed to ${selected}.`);
         }}
         selectedItems={selectedItems}
         onSelectionChange={setSelectedItems}
         selectable
         pagination={{
-          hasNext: true,
-          hasPrevious: true,
+          hasNext: pageInfo.hasNext,
+          hasPrevious: pageInfo.hasPre,
           onNext: nextPage,
           onPrevious: prevPage
         }}

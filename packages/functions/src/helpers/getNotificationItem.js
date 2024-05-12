@@ -7,7 +7,8 @@ const getNotificationItem = async (shopify, orderData) => {
     city: orderData.billing_address.city,
     productName: product.title,
     country: orderData.billing_address.country,
-    productImage: product.image.src
+    productImage: product.image.src,
+    createdAt: new Date(orderData.created_at).getTime()
   };
   return notification;
 };
