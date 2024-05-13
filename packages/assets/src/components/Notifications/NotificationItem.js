@@ -2,7 +2,7 @@ import {ResourceItem} from '@shopify/polaris';
 import NotificationPopup from './item';
 
 function NotificationItem(item) {
-  const {id, firstName, city, country, productName, timestamp, productImage, settings} = item;
+  const {id, firstName, city, country, productName, createdAt, productImage, settings} = item;
 
   return (
     <ResourceItem id={id}>
@@ -12,7 +12,7 @@ function NotificationItem(item) {
         city={city}
         country={country}
         productName={productName}
-        timestamp={timestamp}
+        timestamp={createdAt}
         productImage={productImage}
         settings={settings}
       />
