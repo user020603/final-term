@@ -12,28 +12,29 @@ export default class DisplayManager {
     this.notifications = notifications;
     this.setting = setting;
 
-    // console.log(this.notifications);
-    console.log(this.setting);
+    console.log(this.showPopUp(this.setting));
 
     // Your display logic here
     await new Promise(resolve => setTimeout(resolve, this.setting[0].firstDelay * 1000));
     let count = 0;
     for (const notification of this.notifications) {
-      count += 1;
-      this.insertContainer();
-      this.display({notification: notification});
+      if (this.showPopUp(this.setting)) {
+        count += 1;
+        this.insertContainer();
+        this.display({notification: notification});
 
-      await new Promise(resolve =>
-        setTimeout(() => {
-          resolve();
-        }, this.setting[0].displayDuration * 1000)
-      );
+        await new Promise(resolve =>
+          setTimeout(() => {
+            resolve();
+          }, this.setting[0].displayDuration * 1000)
+        );
 
-      this.fadeOut();
+        this.fadeOut();
 
-      await new Promise(resolve => setTimeout(resolve, this.setting[0].popsInterval * 1000));
+        await new Promise(resolve => setTimeout(resolve, this.setting[0].popsInterval * 1000));
 
-      if (count >= this.setting[0].maxPopsDisplay) break;
+        if (count >= this.setting[0].maxPopsDisplay) return;
+      } else return;
     }
   }
 
@@ -45,6 +46,24 @@ export default class DisplayManager {
   display({notification}) {
     const container = document.querySelector('#Avada-SalePop');
     render(<NotificationPopup {...notification} />, container);
+  }
+
+  showPopUp(setting) {
+    const {excludedUrls, includedUrls, allowShow} = setting[0];
+
+    const currentPage = window.location.href;
+
+    const includedUrlsList = includedUrls.split('\n').map(url => url.trim());
+    const excludedUrlsList = excludedUrls.split('\n').map(url => url.trim());
+
+    if (
+      (allowShow === 'all' && !excludedUrlsList.includes(currentPage)) ||
+      (allowShow === 'specific' && includedUrlsList.includes(currentPage))
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
   insertContainer() {
