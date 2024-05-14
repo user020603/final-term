@@ -10,17 +10,27 @@ export async function getNotifications({limit, page, sort, shopId}) {
   try {
     const objectPagination = paginationHelper(limit, page);
 
-    const [sortField, sortOrder] = sort.split(':');
+    let query = notificationsRef.where('shopId', '==', shopId);
 
-    console.log('sortField: ', sortField);
-    console.log('sortOrder: ', sortOrder);
+    if (sort) {
+      const [sortField, sortOrder] = sort.split(':');
+      console.log('sortField: ', sortField);
+      console.log('sortOrder: ', sortOrder);
+      query = query.orderBy(sortField, sortOrder);
+    }
 
-    const snapShot = await notificationsRef
-      .where('shopId', '==', shopId)
-      .orderBy(sortField, sortOrder)
-      .limit(objectPagination.limitItems)
-      .offset(objectPagination.skip)
-      .get();
+    if (limit) {
+      query = query.limit(objectPagination.limitItems).offset(objectPagination.skip);
+    }
+
+    const snapShot = await query.get();
+
+    // const snapShot = await notificationsRef
+    //   .where('shopId', '==', shopId)
+    //   .orderBy(sortField, sortOrder)
+    //   .limit(objectPagination.limitItems)
+    //   .offset(objectPagination.skip)
+    //   .get();
     const snapShotAll = await notificationsRef.get();
     const length = snapShotAll.docs.map(doc => doc.data()).length;
     const totalPages = Math.ceil(length / limit);

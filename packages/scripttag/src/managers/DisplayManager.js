@@ -18,23 +18,24 @@ export default class DisplayManager {
     await new Promise(resolve => setTimeout(resolve, this.setting[0].firstDelay * 1000));
     let count = 0;
     for (const notification of this.notifications) {
-      if (this.showPopUp(this.setting)) {
-        count += 1;
-        this.insertContainer();
-        this.display({notification: notification});
+      if (!this.showPopUp(this.setting)) {
+        return;
+      }
+      count += 1;
+      this.insertContainer();
+      this.display({notification: notification});
 
-        await new Promise(resolve =>
-          setTimeout(() => {
-            resolve();
-          }, this.setting[0].displayDuration * 1000)
-        );
+      await new Promise(resolve =>
+        setTimeout(() => {
+          resolve();
+        }, this.setting[0].displayDuration * 1000)
+      );
 
-        this.fadeOut();
+      this.fadeOut();
 
-        await new Promise(resolve => setTimeout(resolve, this.setting[0].popsInterval * 1000));
+      await new Promise(resolve => setTimeout(resolve, this.setting[0].popsInterval * 1000));
 
-        if (count >= this.setting[0].maxPopsDisplay) return;
-      } else return;
+      if (count >= this.setting[0].maxPopsDisplay) return;
     }
   }
 
