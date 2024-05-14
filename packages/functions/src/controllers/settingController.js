@@ -1,24 +1,24 @@
-import {getSettings} from '../repositories/settingRepository';
-import {updateSettings} from '../repositories/settingRepository';
+import {getSetting} from '../repositories/settingRepository';
+import {updateSetting} from '../repositories/settingRepository';
 import {getCurrentUserShopId} from '@avada/core/build/authentication';
 
-export async function handleGetSettings(ctx) {
+export async function handleGetSetting(ctx) {
   try {
-    console.log('######### handleGetSettings');
+    console.log('######### handleGetSetting');
     const shopId = getCurrentUserShopId(ctx);
-    const data = await getSettings(shopId);
+    const data = await getSetting(shopId);
     ctx.body = data[0];
   } catch (e) {
     console.error(e);
   }
 }
 
-export function handleUpdateSettings(ctx) {
+export function handleUpdateSetting(ctx) {
   try {
-    const settings = ctx.req.body;
+    const setting = ctx.req.body;
     const shopId = getCurrentUserShopId(ctx);
-    updateSettings(shopId, settings);
-    ctx.body = settings;
+    updateSetting(shopId, setting);
+    ctx.body = setting;
   } catch (e) {
     console.error(e);
   }

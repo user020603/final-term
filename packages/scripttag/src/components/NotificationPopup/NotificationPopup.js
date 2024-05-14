@@ -1,12 +1,13 @@
 import React from 'react';
 import './NoticationPopup.scss';
+import moment from 'moment';
 
 const NotificationPopup = ({
   firstName = 'John Doe',
   city = 'New York',
   country = 'United States',
   productName = 'Puffer Jacket With Hidden Hood',
-  relativeDate = 'a day ago',
+  createdAt = 'a day ago',
   productImage = 'http://paris.mageplaza.com/images/shop/single/big-1.jpg'
 }) => {
   return (
@@ -28,7 +29,7 @@ const NotificationPopup = ({
                 purchased {productName}
               </div>
               <div className={'Avada-SP__Footer'}>
-                {relativeDate}{' '}
+                {moment(new Date(createdAt._seconds * 1000)).fromNow()}{' '}
                 <span className="uni-blue">
                   <i className="fa fa-check" aria-hidden="true" /> by Avada
                 </span>

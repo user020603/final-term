@@ -11,8 +11,8 @@ export default function apiRouter(isEmbed = false) {
   const router = new Router({prefix: getApiPrefix(isEmbed)});
 
   router.get('/notifications', notificationController.handleGetNotifications);
-  router.get('/settings', settingController.handleGetSettings);
-  router.put('/settings', settingController.handleUpdateSettings);
+  router.get('/setting', settingController.handleGetSetting);
+  router.put('/setting', settingController.handleUpdateSetting);
 
   router.get('/samples', sampleController.exampleAction);
   router.get('/shops', shopController.getUserShops);

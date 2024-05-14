@@ -1,12 +1,11 @@
 import {getShopByShopifyDomain} from '@avada/core';
-import getNotificationItem from '../helpers/getNotificationItem';
-import addNotification from '../helpers/addNotification';
+import {addNotifications} from '../repositories/notificationRepository';
 import Shopify from 'shopify-api-node';
 
 export async function listenNewOrder(ctx) {
   try {
     const shopifyDomain = ctx.get('X-Shopify-Shop-Domain');
-    const orderData = ctx.req.body;
+    const orders = [ctx.req.body];
     const shop = await getShopByShopifyDomain(shopifyDomain);
 
     const shopify = new Shopify({
@@ -14,15 +13,11 @@ export async function listenNewOrder(ctx) {
       shopName: shop.shopifyDomain
     });
 
-    const notification = await getNotificationItem(shopify, orderData);
-    notification.shopId = shop.id;
-    notification.shopifyDomain = shopifyDomain;
-
-    addNotification(notification);
+    await addNotifications(shopify, shop, orders);
     console.log('\n########\nAdded order to notification\n########\n');
 
     return (ctx.body = {
-      data: orderData,
+      data: orders,
       status: 200
     });
   } catch (e) {

@@ -15,10 +15,10 @@ export default class ApiManager {
 
     const dataFetched = await makeRequest(url, 'GET');
 
-    const {notifications, settings} = dataFetched;
+    const {notifications, setting} = dataFetched;
     // console.log(notifications);
     // console.log(settings);
 
-    return {notifications, settings};
+    return {notifications, setting};
   };
 }

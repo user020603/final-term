@@ -3,7 +3,7 @@ import {useState, useCallback} from 'react';
 import useFetchApi from '../../hooks/api/useFetchApi.js';
 import useEditApi from '../../hooks/api/useEditApi.js';
 import NotificationPopup from '../../components/Notifications/item.js';
-import defaultSettings from '../../helpers/defaultSettings.js';
+import defaultSetting from "../../helpers/defaultSetting"
 import DisplayTab from '../../components/Settings/DisplayTab.js';
 import TriggerTab from '../../components/Settings/TriggerTab.js';
 
@@ -11,12 +11,12 @@ function TabSettings() {
   const [selectedTab, setSelectedTab] = useState(0);
 
   const {data: input, handleChangeInput, loading} = useFetchApi({
-    url: '/settings',
-    defaultData: defaultSettings
+    url: '/setting',
+    defaultData: defaultSetting
   });
 
-  const {editing, handleEdit: handleSaveSettings} = useEditApi({
-    url: '/settings'
+  const {editing, handleEdit: handleSaveSetting} = useEditApi({
+    url: '/setting'
   });
 
   const handleTabChange = useCallback(selectedTabIndex => setSelectedTab(selectedTabIndex), []);
@@ -75,7 +75,7 @@ function TabSettings() {
       primaryAction={{
         content: 'Save',
         onAction: () => {
-          handleSaveSettings(input);
+          handleSaveSetting(input);
         },
         loading: editing
       }}

@@ -3,11 +3,11 @@ const Shopify = require('shopify-api-node');
 (async () => {
   const shopify = new Shopify({
     shopName: 'quickstart-b973b955.myshopify.com',
-    accessToken: 'shpua_ac37edfd84a761c031e44c0db866dd6d'
+    accessToken: 'shpua_0a6541f541a80a23f1bde04150eb788b'
   });
 
-  const scriptTags = await shopify.scriptTag.list();
-  console.log(scriptTags);
+  const webhook = await shopify.webhook.list();
+  console.log("\n********\n", webhook, "\n********\n");
 
     // await shopify.scriptTag.create({
     //   event: "onload",

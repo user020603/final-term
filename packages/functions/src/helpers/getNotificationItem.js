@@ -1,4 +1,4 @@
-const getNotificationItem = async (shopify, orderData) => {
+const getNotificationItem = async (shop, shopify, orderData) => {
   const productId = orderData.line_items[0].product_id;
   const product = await shopify.product.get(productId);
   const notification = {
@@ -8,7 +8,9 @@ const getNotificationItem = async (shopify, orderData) => {
     productName: product.title,
     country: orderData.billing_address.country,
     productImage: product.image.src,
-    createdAt: new Date(orderData.created_at).getTime()
+    createdAt: new Date(orderData.created_at),
+    shopId: shop.id,
+    shopifyDomain: shop.shopifyDomain
   };
   return notification;
 };

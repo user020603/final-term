@@ -6,33 +6,34 @@ import NotificationPopup from '../components/NotificationPopup/NotificationPopup
 export default class DisplayManager {
   constructor() {
     this.notifications = [];
-    this.settings = {};
+    this.setting = {};
   }
-  async initialize({notifications, settings}) {
+  async initialize({notifications, setting}) {
     this.notifications = notifications;
-    this.settings = settings;
+    this.setting = setting;
 
     // console.log(this.notifications);
-    console.log(this.settings);
+    console.log(this.setting);
 
     // Your display logic here
-    await new Promise(resolve => setTimeout(resolve, this.settings[0].firstDelay * 1000));
+    await new Promise(resolve => setTimeout(resolve, this.setting[0].firstDelay * 1000));
     let count = 0;
     for (const notification of this.notifications) {
       count += 1;
-      if (count >= this.settings[0].maxPopsDisplay) break;
       this.insertContainer();
       this.display({notification: notification});
 
       await new Promise(resolve =>
         setTimeout(() => {
           resolve();
-        }, this.settings[0].displayDuration * 1000)
+        }, this.setting[0].displayDuration * 1000)
       );
 
-      this.fadeOut({notification: notifications});
+      this.fadeOut();
 
-      await new Promise(resolve => setTimeout(resolve, this.settings[0].popsInterval * 1000));
+      await new Promise(resolve => setTimeout(resolve, this.setting[0].popsInterval * 1000));
+
+      if (count >= this.setting[0].maxPopsDisplay) break;
     }
   }
 
@@ -50,7 +51,7 @@ export default class DisplayManager {
     const popupEl = document.createElement('div');
     popupEl.id = `Avada-SalePop`;
     // popupEl.classList.add('Avada-SalePop__OuterWrapper');
-    popupEl.classList.add(this.settings[0].position);
+    popupEl.classList.add(this.setting[0].position);
     const targetEl = document.querySelector('body').firstChild;
     if (targetEl) {
       insertAfter(popupEl, targetEl);

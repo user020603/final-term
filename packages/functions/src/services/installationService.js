@@ -1,7 +1,8 @@
 import Shopify from 'shopify-api-node';
-import {addDefaultSettings} from '../repositories/settingRepository';
+import {addDefaultSetting} from '../repositories/settingRepository';
 import {addNotifications} from '../repositories/notificationRepository';
 import {getShopByShopifyDomain} from '@avada/core';
+import {createWebhook} from './webhookService';
 
 export const afterInstall = async ctx => {
   try {
@@ -18,9 +19,13 @@ export const afterInstall = async ctx => {
       status: 'any',
       limit: 30
     });
-    await Promise.all([addNotifications(shopify, orders, shop), addDefaultSettings(shop)]);
+
+    await Promise.all([
+      addNotifications(shopify, shop, orders),
+      addDefaultSetting(shop),
+      createWebhook(shopify)
+    ]);
     console.log('\n################\n Added after install \n###############\n');
-    // await Promise.all(addNotifications(orders, shop, shopifyDomain), addDefaultSettings(shop));
   } catch (e) {
     console.error(e);
   }
@@ -29,5 +34,3 @@ export const afterInstall = async ctx => {
 /**
  * @param {*} param0
  */
-
-

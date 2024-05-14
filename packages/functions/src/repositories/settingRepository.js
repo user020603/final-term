@@ -2,7 +2,7 @@
 const admin = require('firebase-admin');
 const serviceAccount = require('../../../functions/serviceAccount.development.json');
 
-const defaultSettings = {
+const defaultSetting = {
   position: 'bottom-left',
   hideTimeAgo: false,
   truncateProductName: false,
@@ -21,34 +21,34 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-const settingsRef = db.collection('settings');
+const settingRef = db.collection('settings');
 
 // End Database
 
-export async function getSettings(shopId) {
-  const snapShot = await settingsRef
+export async function getSetting(shopId) {
+  const snapShot = await settingRef
     .where('shopId', '==', shopId)
     .limit(1)
     .get();
   return snapShot.docs.map(doc => doc.data());
 }
 
-export async function updateSettings(shopId, settings) {
-  const snapshotSettings = await settingsRef
+export async function updateSetting(shopId, setting) {
+  const snapshotSetting = await settingRef
     .where('shopId', '==', shopId)
     .limit(1)
     .get();
 
-  if (!snapshotSettings.empty) {
-    const doc = snapshotSettings.docs[0];
-    await settingsRef.doc(doc.id).update(settings);
+  if (!snapshotSetting.empty) {
+    const doc = snapshotSetting.docs[0];
+    await settingRef.doc(doc.id).update(setting);
   }
 }
 
-export async function addDefaultSettings(shop) {
+export async function addDefaultSetting(shop, setting = defaultSetting) {
   const shopId = shop.id;
-  const shopifyDomain = shop.shopifyDomain
-  defaultSettings.shopId = shopId;
-  defaultSettings.shopifyDomain = shopifyDomain
-  await settingsRef.add(defaultSettings);
+  const shopifyDomain = shop.shopifyDomain;
+  setting.shopId = shopId;
+  setting.shopifyDomain = shopifyDomain;
+  await settingRef.add(setting);
 }
