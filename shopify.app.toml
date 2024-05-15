@@ -2,7 +2,7 @@
 
 name = "Simple NotiApp"
 client_id = "7a59e9a8b2a89d48b0ca099c3db832f3"
-application_url = "https://expansys-shine-sale-keep.trycloudflare.com/auth/shopify"
+application_url = "https://tribunal-affairs-particular-comfort.trycloudflare.com/auth/shopify"
 embedded = true
 
 [access_scopes]
@@ -11,9 +11,9 @@ use_legacy_install_flow = true
 
 [auth]
 redirect_urls = [
-  "https://expansys-shine-sale-keep.trycloudflare.com/auth/shopify/callback",
-  "https://expansys-shine-sale-keep.trycloudflare.com/authSa/shopify/callback",
-  "https://expansys-shine-sale-keep.trycloudflare.com/auth/shopify/embed/callback",
+  "https://tribunal-affairs-particular-comfort.trycloudflare.com/auth/shopify/callback",
+  "https://tribunal-affairs-particular-comfort.trycloudflare.com/authSa/shopify/callback",
+  "https://tribunal-affairs-particular-comfort.trycloudflare.com/auth/shopify/embed/callback",
   "https://localhost:3000/auth/shopify/callback",
   "https://localhost:3000/authSa/shopify/callback",
   "https://localhost:3000/auth/shopify/embed/callback"
