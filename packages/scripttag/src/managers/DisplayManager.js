@@ -12,13 +12,11 @@ export default class DisplayManager {
     this.notifications = notifications;
     this.setting = setting;
 
-    console.log(this.showPopUp(this.setting));
-
     // Your display logic here
     await new Promise(resolve => setTimeout(resolve, this.setting[0].firstDelay * 1000));
     let count = 0;
     for (const notification of this.notifications) {
-      if (!this.showPopUp(this.setting)) {
+      if (!this.showPopUp(this.setting[0])) {
         return;
       }
       count += 1;
@@ -46,11 +44,11 @@ export default class DisplayManager {
 
   display({notification}) {
     const container = document.querySelector('#Avada-SalePop');
-    render(<NotificationPopup {...notification} />, container);
+    render(<NotificationPopup {...notification} settings={this.setting[0]} />, container);
   }
 
   showPopUp(setting) {
-    const {excludedUrls, includedUrls, allowShow} = setting[0];
+    const {excludedUrls, includedUrls, allowShow} = setting;
 
     const currentPage = window.location.href;
 

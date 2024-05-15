@@ -1,6 +1,7 @@
 import React from 'react';
 import './NoticationPopup.scss';
 import moment from 'moment';
+import truncateString from '../../helpers/utils/truncateString';
 
 const NotificationPopup = ({
   firstName = 'John Doe',
@@ -8,8 +9,10 @@ const NotificationPopup = ({
   country = 'United States',
   productName = 'Puffer Jacket With Hidden Hood',
   createdAt = 'a day ago',
-  productImage = 'http://paris.mageplaza.com/images/shop/single/big-1.jpg'
+  productImage = 'http://paris.mageplaza.com/images/shop/single/big-1.jpg',
+  settings = {hideTimeAgo: false, truncateProductName: false}
 }) => {
+  const {hideTimeAgo, truncateProductName} = settings;
   return (
     <div className="Avava-SP__Wrapper fadeInUp animated">
       <div className="Avava-SP__Inner">
@@ -26,10 +29,11 @@ const NotificationPopup = ({
                 {firstName} in {city}, {country}
               </div>
               <div className={'Avada-SP__Subtitle'}>
-                purchased {productName}
+                purchased {truncateProductName ? truncateString(productName, 16) : productName}
               </div>
+
               <div className={'Avada-SP__Footer'}>
-                {moment(new Date(createdAt._seconds * 1000)).fromNow()}{' '}
+                {hideTimeAgo ? '' : `${moment(createdAt).fromNow()}`}{' '}
                 <span className="uni-blue">
                   <i className="fa fa-check" aria-hidden="true" /> by Avada
                 </span>
