@@ -7,6 +7,6 @@ const router = new Router({
 });
 
 // router.use(verifyWebhook);
-router.get('/getdata', clientApiController.getData);
+router.get('/notifications', clientApiController.getData);
 
 export default router;

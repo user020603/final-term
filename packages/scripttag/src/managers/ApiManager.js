@@ -9,7 +9,7 @@ export default class ApiManager {
   getApiData = async () => {
     const shopifyDomain = window.Shopify.shop;
 
-    const url = `https://${data.app.base_url}/clientApi/getdata?shopifyDomain=${shopifyDomain}`;
+    const url = `https://${data.app.base_url}/clientApi/notifications?shopifyDomain=${shopifyDomain}`;
 
     console.log(url);
 
