@@ -29,11 +29,12 @@ export async function getNotifications({limit, page, sort, shopId}) {
     const snapShotPagi = await query.get();
 
     const totalPages = Math.ceil(length / limit);
+    const noData = snapShotPagi.docs.length === 0;
     return {
       data: snapShotPagi.docs.map(doc => doc.data()),
       pageInfo: {
-        hasNext: page == totalPages ? false : true,
-        hasPre: page == 1 ? false : true
+        hasNext: noData ? false : page == totalPages ? false : true,
+        hasPre: noData ? false : page == 1 ? false : true
       }
     };
   } catch (e) {

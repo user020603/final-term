@@ -33,7 +33,7 @@ const NotificationPopup = ({
               </div>
 
               <div className={'Avada-SP__Footer'}>
-                {hideTimeAgo ? '' : `${moment(createdAt).fromNow()}`}{' '}
+                {hideTimeAgo ? '' : `${moment(new Date(createdAt._seconds * 1000)).fromNow()}`}{' '}
                 <span className="uni-blue">
                   <i className="fa fa-check" aria-hidden="true" /> by Avada
                 </span>
