@@ -1,8 +1,8 @@
-import Shopify from 'shopify-api-node';
-import {addDefaultSetting} from '../repositories/settingRepository';
+import {addDefaultSetting} from './settingService';
 import {addNotifications} from './notificationService';
 import {getShopByShopifyDomain} from '@avada/core';
 import {createWebhook} from './webhookService';
+import {createShopify} from './shopifyService';
 
 export const afterInstall = async ctx => {
   try {
@@ -10,10 +10,7 @@ export const afterInstall = async ctx => {
     console.log('\n#######\n', shopifyDomain, '\n########\n');
     const shop = await getShopByShopifyDomain(shopifyDomain);
 
-    const shopify = new Shopify({
-      accessToken: shop.accessToken,
-      shopName: shop.shopifyDomain
-    });
+    const shopify = createShopify(shop);
 
     const orders = await shopify.order.list({
       status: 'any',
