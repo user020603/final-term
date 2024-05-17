@@ -1,9 +1,4 @@
-// Database
-const admin = require('firebase-admin');
-const db = admin.firestore();
-const settingRef = db.collection('settings');
-// End Database
-
+import {addSetting} from '../repositories/settingRepository';
 import {defaultSetting} from '../helpers/defaultSetting';
 
 export async function addDefaultSetting(shop, setting = defaultSetting) {
@@ -11,5 +6,5 @@ export async function addDefaultSetting(shop, setting = defaultSetting) {
   const shopifyDomain = shop.shopifyDomain;
   setting.shopId = shopId;
   setting.shopifyDomain = shopifyDomain;
-  await settingRef.add(setting);
+  await addSetting(setting);
 }

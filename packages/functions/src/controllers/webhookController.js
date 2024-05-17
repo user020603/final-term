@@ -13,7 +13,6 @@ export async function listenNewOrder(ctx) {
 
     return (ctx.body = {
       data: orders,
-      status: 200
     });
   } catch (e) {
     console.error(e);

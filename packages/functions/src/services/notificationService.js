@@ -1,8 +1,4 @@
-// Database
-const admin = require('firebase-admin');
-const db = admin.firestore();
-const notificationsRef = db.collection('notifications');
-// End Database
+import {addNotification} from '../repositories/notificationRepository';
 
 export async function addNotifications({shopify, shop, orders}) {
   try {
@@ -26,7 +22,7 @@ export async function addNotifications({shopify, shop, orders}) {
           createdAt: new Date(order.created_at)
         };
 
-        return notificationsRef.add(notification);
+        return addNotification(notification);
       })
     );
   } catch (e) {

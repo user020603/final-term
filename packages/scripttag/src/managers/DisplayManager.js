@@ -17,20 +17,20 @@ export default class DisplayManager {
     }
 
     // Your display logic here
-    await new Promise(resolve => setTimeout(resolve, this.setting[0].firstDelay * 1000));
+    await this.delay(this.setting[0].firstDelay);
     const maxPopsDisplay = this.setting[0].maxPopsDisplay;
     const notificationDisplay = this.notifications.slice(0, maxPopsDisplay);
     for (const notification of notificationDisplay) {
       this.insertContainer();
       this.display({notification: notification});
-      await new Promise(resolve =>
-        setTimeout(() => {
-          resolve();
-        }, this.setting[0].displayDuration * 1000)
-      );
+      await this.delay(this.setting[0].displayDuration);
       this.fadeOut();
-      await new Promise(resolve => setTimeout(resolve, this.setting[0].popsInterval * 1000));
+      await this.delay(this.setting[0].popsInterval);
     }
+  }
+
+  delay(timeInSeconds) {
+    return new Promise(resolve => setTimeout(resolve, timeInSeconds * 1000));
   }
 
   fadeOut() {
@@ -64,7 +64,7 @@ export default class DisplayManager {
   insertContainer() {
     const popupEl = document.createElement('div');
     popupEl.id = `Avada-SalePop`;
-    // popupEl.classList.add('Avada-SalePop__OuterWrapper');
+    popupEl.classList.add('Avada-SalePop__OuterWrapper');
     popupEl.classList.add(this.setting[0].position);
     const targetEl = document.querySelector('body').firstChild;
     if (targetEl) {

@@ -41,3 +41,7 @@ export async function getNotifications({limit, page, sort, shopId}) {
     console.error(e);
   }
 }
+
+export async function addNotification(notification) {
+  return notificationsRef.add(notification);
+}

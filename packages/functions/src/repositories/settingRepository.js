@@ -8,7 +8,6 @@ admin.initializeApp({
 
 const db = admin.firestore();
 const settingRef = db.collection('settings');
-
 // End Database
 
 export async function getSetting(shopId) {
@@ -29,4 +28,8 @@ export async function updateSetting(shopId, setting) {
     const doc = snapshotSetting.docs[0];
     await settingRef.doc(doc.id).update(setting);
   }
+}
+
+export async function addSetting(setting) {
+  settingRef.add(setting);
 }
